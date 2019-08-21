@@ -7,13 +7,14 @@ import time
 from chardet import detect
 
 qzbm = r'gbk'#网页编码
-zjlj = r'<dd><a href="(.*?)">(.*?)</a></dd>'  #章节链接和标题通配符
-zjnr = r'<div id="content">(.*?)</div>'       #章节内容通配符
+zjlj = r'<dd><a href="(.*?)" title="(.*?)">.*?</dd>'  #章节链接和标题通配符
+zjnr = r'<div class="yd_text2">(.*?)</div>'       #章节内容通配符
 nrqc1 = r'&nbsp;'                             #内容中去除的内容1
 nrqc2 = r'<br />'                             #内容中去除的内容2
-wzzyurl = r'https://www.biduo.cc/biquge/3_3957/'#网站主页url
-qUrl = r'https://www.biduo.cc/biquge/3_3957/'                 #内容页链接前置链接
-wbname = r'我的测试.txt'                #生成的文本文件名字
+wzzyurl = r'https://www.kanmaoxian.com/51/51181/index.html'#网站主页url
+qUrl = r'https://www.kanmaoxian.com'                 #内容页链接前置链接
+wbname = r'仙剑之本座邪剑仙.txt'                #生成的文本文件名字
+
 def download_novel():
     #获取页面源代码
     url = wzzyurl
@@ -29,11 +30,12 @@ def download_novel():
     reg = zjlj
     urls = re.findall(reg,html)
     #()元组 []列表
-    #print(urls[1129])
+    #print(urls[1135])            #print(urls[1129])
 
-    #for url in urls[411:]: #根据中断的章节数匹配数组
-
-    for url in urls[411:]:
+    #for url in urls[411:]: #根据中断的章节数匹配数组#for url in enumerate(urls[411:],411):对应的列表序号
+    #for index,url in enumerate(urls):
+    for index,url in enumerate(urls):
+        print('列表序号：{0}'.format(index))
         #章节链接
         sUrl = qUrl + str(url[0])
         #urlList = []
@@ -45,7 +47,7 @@ def download_novel():
         novel_url = d[0]
         #章节标题
         novel_title = d[1]
-        
+
         del d
         #novel_url,novel_title = url
         #获取章节页面源码
@@ -56,7 +58,7 @@ def download_novel():
         #多行匹配 s
         reg = re.compile(reg,re.S)
         chapt_content = re.findall(reg, chapt_html)
-        print(chapt)
+        #print(chapt)
 
         if chapt_content == None:
             break
